@@ -110,13 +110,9 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder "database/data/", "/var/lib/mysql", :extra => 'dmode=777,fmode=777'
   end
 
-  # /srv/config/
-  #
-  # If a server-conf directory exists in the same directory as your Vagrantfile,
-  # a mapped directory inside the VM will be created that contains these files.
-  # This directory is currently used to maintain various config files for php and
-  # Apache as well as any pre-existing database files.
-  config.vm.synced_folder "config/", "/srv/config"
+  # /srv/log/
+  config.vm.synced_folder "log/", "/srv/log"
+
 
   # /srv/www/
   #
