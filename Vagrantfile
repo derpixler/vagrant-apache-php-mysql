@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
 
     # Capture the paths to all vvv-hosts files under the www/ directory.
     paths = []
-    Dir.glob(vagrant_dir + '/config/projects.hosts').each do |path|
+    Dir.glob(vagrant_dir + '/config/hosts.list').each do |path|
       paths << path
     end
 
@@ -58,7 +58,14 @@ Vagrant.configure("2") do |config|
       file_hosts = IO.read(path).split( "\n" )
       file_hosts.each do |line|
         if line[0..0] != "#"
-          new_hosts << line
+          sameHosts = line.gsub( ' ', '' ).split( "|" )
+          if sameHosts.length > 1
+            sameHosts.each do |shost|
+              new_hosts << shost
+            end
+          else
+            new_hosts << line
+          end
         end
       end
       hosts.concat new_hosts
@@ -68,6 +75,7 @@ Vagrant.configure("2") do |config|
     config.hostsupdater.aliases = hosts
 
   end
+
 
   # Default Box IP Address
   #
@@ -116,57 +124,19 @@ Vagrant.configure("2") do |config|
   # inside the VM will be created that acts as the default location for Apache sites. Put all
   # of your project files here that you want to access through the web server
   if vagrant_version >= "1.3.0"
-    config.vm.synced_folder "www/", "/srv/www/", :owner => "www-data", :mount_options => [ "dmode=775", "fmode=774" ]
+    config.vm.synced_folder "html/", "/srv/html/", :owner => "www-data", :mount_options => [ "dmode=775", "fmode=774" ]
   else
-    config.vm.synced_folder "www/", "/srv/www/", :owner => "www-data", :extra => 'dmode=775,fmode=774'
+    config.vm.synced_folder "html/", "/srv/html/", :owner => "www-data", :extra => 'dmode=775,fmode=774'
   end
 
-  # /srv/wordpress/
-  #
-  # If a www directory exists in the same directory as your Vagrantfile, a mapped directory
-  # inside the VM will be created that acts as the default location for Apache sites. Put all
-  # of your project files here that you want to access through the web server
-  if vagrant_version >= "1.3.0"
-    config.vm.synced_folder "wordpress-core/", "/srv/wordpress/", :owner => "www-data", :mount_options => [ "dmode=775", "fmode=644" ]
-  else
-    config.vm.synced_folder "wordpress-core/", "/srv/wordpress/", :owner => "www-data", :extra => 'dmode=775,fmode=644'
-  end
+  # /srv/scripts/
+  config.vm.synced_folder "scripts/", "/srv/scripts"
 
-  # Customfile - POSSIBLY UNSTABLE
-  #
-  # Use this to insert your own (and possibly rewrite) Vagrant config lines. Helpful
-  # for mapping additional drives. If a file 'Customfile' exists in the same directory
-  # as this Vagrantfile, it will be evaluated as ruby inline as it loads.
-  #
-  # Note that if you find yourself using a Customfile for anything crazy or specifying
-  # different provisioning, then you may want to consider a new Vagrantfile entirely.
-  #if File.exists?(File.join(vagrant_dir,'Customfile')) then
-  #  eval(IO.read(File.join(vagrant_dir,'Customfile')), binding)
-  #end
-
-  # Provisioning
-  config.vm.provision :shell, path: "provision.sh"
-
-
-  # provision.sh or provision-custom.sh
-  #
-  # By default, Vagrantfile is set to use the provision.sh bash script located in the
-  # provision directory. If it is detected that a provision-custom.sh script has been
-  # created, that is run as a replacement. This is an opportunity to replace the entirety
-  # of the provisioning provided by default.
-  #if File.exists?(File.join(vagrant_dir,'provision','provision-custom.sh')) then
-  #  config.vm.provision :shell, :path => File.join( "provision", "provision-custom.sh" )
-  #else
-  #  config.vm.provision :shell, :path => File.join( "provision", "provision.sh" )
-  #end
-
-  # provision-post.sh acts as a post-hook to the default provisioning. Anything that should
-  # run after the shell commands laid out in provision.sh or provision-custom.sh should be
-  # put into this file. This provides a good opportunity to install additional packages
-  # without having to replace the entire default provisioning script.
-  #if File.exists?(File.join(vagrant_dir,'provision','provision-post.sh')) then
-  #  config.vm.provision :shell, :path => File.join( "provision", "provision-post.sh" )
-  #end
+  # shell scripts
+  config.vm.provision :shell, path: "scripts/provision.sh"
+  config.vm.provision :shell, path: "scripts/webroute.sh"
+  config.vm.provision :shell, path: "scripts/vhosts.sh"
+  config.vm.provision :shell, path: "scripts/composer.sh"
 
   # Prevent stdin: is not a tty error
   # @see http://foo-o-rama.com/vagrant--stdin-is-not-a-tty--fix.html
