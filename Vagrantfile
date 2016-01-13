@@ -125,8 +125,9 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder "html/", "/srv/html/", :owner => "www-data", :extra => 'dmode=775,fmode=774'
   end
 
-  # /srv/scripts/
   config.vm.synced_folder "scripts/", "/srv/scripts"
+  config.vm.synced_folder "config/", "/srv/config"
+  config.vm.synced_folder "config/", "/srv/database"
 
   # shell scripts
   config.vm.provision :shell, path: "scripts/provision.sh"
