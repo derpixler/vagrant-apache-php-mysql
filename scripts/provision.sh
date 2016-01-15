@@ -4,7 +4,7 @@ apt-get update -y
 debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password root'
 debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password root'
 # install LAMP
-sudo apt-get install -y apache2 libapache2-mod-php5 php5 php5-mysql mysql-server php5-xdebug
+sudo apt-get install -y apache2 libapache2-mod-php5 php5 php5-mysql mysql-server php5-xdebug php5-curl
 sudo service mysql stop
 # allow mysql access from network
 sudo sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
