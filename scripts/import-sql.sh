@@ -34,7 +34,9 @@ then
 	db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
 	if [ "$?" != "0" ]
 	then
-		printf "  * Error - Create $pre_dot database via init-custom.sql before attempting import\n\n"
+		mysql_cmd='CREATE DATABASE IF NOT EXISTS `'$pre_dot'` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+		USE `'$pre_dot'`;'
+		db_exist=`mysql -u root -proot --skip-column-names -e "$mysql_cmd"`
 	else
 		if [ "" == "$db_exist" ]
 		then
