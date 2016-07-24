@@ -1,0 +1,26 @@
+{
+	"box": "scotch/box",
+	"network" : {
+		"private_network": {
+			"ip": "192.168.33.10"
+		},
+		"forwarded_port": {
+			"80": "80",
+			"9200": "9200"
+		}
+	},
+	"synced_folder": {
+		"./shared": "/var/www",
+		"./config": "/srv/config"
+	},
+	"provision": {
+		"file": {},
+		"shell_script": [
+			"provisioning/vhost.sh",
+			"provisioning/database.sh",
+			"provisioning/openjdk.sh",
+			"provisioning/elastic.sh",
+			"provisioning/shell_env.sh"
+		]
+	}
+}
