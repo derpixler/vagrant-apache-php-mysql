@@ -98,4 +98,40 @@ Vagrant.configure(2) do |config|
 			config.vm.provision 'shell', path: shell_script
 		end
 	end
+
+  ##
+   # Backup Database on destroy and halt
+   #
+   #config.trigger.before [:halt], :stdout => true, :force => true do
+   #  run_remote 'bash /srv/database/export_db.sh'
+   #end
+
+   ##
+   # Trigger software updater after vagrant up
+   #
+   #config.trigger.after [:up], :stdout => true, :force => true do
+   #  run_remote 'bash /vagrant/provisioning/apt-update.sh'
+   #end
+
+   # Local Machine Hosts
+   #
+   # If the Vagrant plugin hostsupdater (https://github.com/cogitatio/vagrant-hostsupdater) is
+   # installed, the following will automatically configure your local machine's hosts file to
+   # be aware of the domains specified below. Watch the provisioning script as you may be
+   # required to enter a password for Vagrant to access your hosts file.
+   #
+   # By default, we'll include the domains setup by VVV through the vvv-hosts file
+   # located in the www/ directory.
+   #
+   # Other domains can be automatically added by including a vvv-hosts file containing
+   # individual domains separated by whitespace in subdirectories of www/.
+
+   if ! presets[ 'network' ][ 'private_network' ][ 'host' ].nil?
+     config.vm.hostname = presets[ 'network' ][ 'private_network' ][ 'host' ]
+   end
+
+   if ! presets[ 'network' ][ 'private_network' ][ 'alias' ].nil?
+     config.hostsupdater.aliases = presets[ 'network' ][ 'private_network' ][ 'alias' ]
+   end
+
 end

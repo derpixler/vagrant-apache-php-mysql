@@ -2,7 +2,11 @@
 	"box": "scotch/box",
 	"network" : {
 		"private_network": {
-			"ip": "192.168.33.10"
+			"ip": "192.168.33.10",
+			"host": "playground.box",
+			"alias": [
+				"my.playground.box"
+			]
 		},
 		"forwarded_port": {
 			"80": "80",
