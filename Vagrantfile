@@ -23,6 +23,10 @@ else
 	presets = JSON.parse( File.read fallback_config_file )
 end
 
+# Store the current version of Vagrant for use in conditionals when dealing
+# with possible backward compatible issues.
+vagrant_version = Vagrant::VERSION.sub(/^v/, '')
+
 # All Vagrant configuration is done below. The '2' in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -99,12 +103,38 @@ Vagrant.configure(2) do |config|
 		end
 	end
 
-  ##
-   # Backup Database on destroy and halt
-   #
-   #config.trigger.before [:halt], :stdout => true, :force => true do
-   #  run_remote 'bash /srv/database/export_db.sh'
-   #end
+  # /srv/database/
+  #
+  # If a database directory exists in the same directory as your Vagrantfile,
+  # a mapped directory inside the VM will be created that contains these files.
+  # This directory is used to maintain default database scripts as well as backed
+  # up mysql dumps (SQL files) that are to be imported automatically on vagrant up
+  #config.vm.synced_folder "database/", "/srv/database"
+
+ # if ! presets[ 'database_sync' ].nil?
+ #
+ #     presets[ 'database_sync' ].each do | folder, database |
+ #
+ #       database_folder = "database/data/" + database
+ #
+ #       source = File.expand_path folder + '/' + database
+ #       destiation =  File.expand_path "./database/data/"
+ #
+ #       unless File.directory?( database_folder )
+ #         FileUtils.cp_r( source, destiation )
+ #       end
+ #
+ #       config.vm.synced_folder folder + '/' + database + "/", "/var/lib/mysql/" +  database , :nfs => { :mount_options =>  ["dmode=777","fmode=777"] }
+ #
+ #     end
+ #
+ # end
+
+  if vagrant_version >= "1.3.0"
+    config.vm.synced_folder "database/data/", "/var/lib/mysql", :nfs => { :mount_options =>  ["dmode=777","fmode=777"] }
+  else
+    config.vm.synced_folder "database/data/", "/var/lib/mysql", :extra => 'dmode=777,fmode=777'
+  end
 
    ##
    # Trigger software updater after vagrant up

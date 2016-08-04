@@ -2,10 +2,11 @@
 	"box": "scotch/box",
 	"network" : {
 		"private_network": {
-			"ip": "192.168.33.10",
-			"host": "playground.box",
+			"ip": "192.168.33.199",
+			"host": "playground.wp",
 			"alias": [
-				"my.playground.box"
+				"my.playground.wp",
+				"play.box"
 			]
 		},
 		"forwarded_port": {
@@ -14,17 +15,14 @@
 		}
 	},
 	"synced_folder": {
-		"./shared": "/var/www",
-		"./config": "/srv/config"
+		"./html": "/var/www"
 	},
 	"provision": {
 		"file": {},
 		"shell_script": [
 			"provisioning/vhost.sh",
-			"provisioning/database.sh",
-			"provisioning/openjdk.sh",
-			"provisioning/elastic.sh",
-			"provisioning/shell_env.sh"
+			"provisioning/phpmyadmin.sh",
+			"provisioning/import-db.sh"
 		]
 	}
 }

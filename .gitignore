@@ -1,8 +1,7 @@
 ._*
 .*
-!.gitignore
-database/backups/*
-database/data/*
-config/hosts.list
-log/*
-html/*
+/database/backups/*
+/database/data/*
+/config/hosts.list
+/log/
+/html/
