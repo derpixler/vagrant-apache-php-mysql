@@ -2,5 +2,5 @@
   "name": "derpixler/vagrant-apache-php-mysql",
   "description": "You get a Vagrant setup",
   "license": "GPL-2.0",
-  "type": vagrant"
+  "type": "vagrant"
 }
