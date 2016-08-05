@@ -11,5 +11,8 @@
 	],
 	"support": {
 		"issues": "https://github.com/derpixler/vagrant-apache-php-mysql/issues"
-	}
+	},
+	"require": {
+        	"composer/installers": "~1.0"
+    	}
 }
