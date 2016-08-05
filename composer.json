@@ -1,6 +1,15 @@
 {
-  "name": "derpixler/vagrant-apache-php-mysql",
-  "description": "You get a Vagrant setup",
-  "license": "GPL-2.0",
-  "type": vagrant"
+	"name": "derpixler/vagrant-apache-php-mysql",
+	"description": "You get a Vagrant setup",
+	"license": "GPL-2.0",
+	"type": vagrant",
+	"authors": [
+		{
+			"name": "René Reimann",
+			"homepage": "http://renreim.de"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/derpixler/vagrant-apache-php-mysql/issues",
+	},
 }
