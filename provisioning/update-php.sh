@@ -12,3 +12,11 @@ sudo apachectl restart
 # enable display errors
 sudo vi /etc/php/7.0/apache2/php.ini
 sudo service apache2  restart
+
+# enable xdebug
+sudo vi /etc/php/7.0/apache2/conf.d/20-xdebug.ini
+
+xdebug.remote_enable=1
+xdebug.remote_connect_back=1
+xdebug.remote_port=9000
+xdebug.ide_key=PHPSTORM
