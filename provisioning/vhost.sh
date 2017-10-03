@@ -42,6 +42,12 @@ write_vHosts() {
 		mkdir -p ${logFilePah}
 	fi
 
+	echo "Delete /var/www/${DocumentRoot}"
+	sudo rm -rf ${DocumentRoot}
+
+	echo "Create Symlink into WordPress folder"
+	sudo ln -s /var/www/wordpress ${DocumentRoot}
+
 	rm -rf ${confFile}
 
    	echo "Create the vHost for" $1
@@ -99,6 +105,8 @@ echo -e $conf >> ${confFile}
 		sudo unlink ${confFile//available/enabled}
 	fi
 	sudo ln -s $confFile ${confFile//available/enabled}
+
+
 
 	echo '---'
 }
