@@ -39,9 +39,9 @@ Vagrant.configure(2) do |config|
 	# Port forwarding
 	# in vagrant.dist.json the ports are given as { "host_port": "guest_port" }
     #
-	presets[ 'network' ][ 'forwarded_port' ].each do | host_port, guest_port |
-		config.vm.network 'forwarded_port', guest: guest_port, host: host_port
-	end
+	#presets[ 'network' ][ 'forwarded_port' ].each do | host_port, guest_port |
+	#	config.vm.network 'forwarded_port', guest: guest_port, host: host_port
+	#end
 
 	##
 	# Create a private network, which allows host-only access to the machine
